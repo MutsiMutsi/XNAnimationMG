@@ -20,7 +20,7 @@ using Microsoft.Xna.Framework.Content.Pipeline;
 namespace XNAnimationPipeline.Pipeline
 {
     [ContentTypeWriter]
-    internal class SkinnedModelWriter : ContentTypeWriter<SkinnedModelContent>
+    public class SkinnedModelWriter : ContentTypeWriter<SkinnedModelContent>
     {
         protected override void Write(ContentWriter output, SkinnedModelContent value)
         {

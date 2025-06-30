@@ -324,6 +324,24 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 					//PostProcessSteps.ValidateDataStructure |
 					);
 
+				//Find additional animations BEFORE we do anything else
+				var animDir = Path.Combine(Path.GetDirectoryName(filename), "Animations");
+				if (Path.Exists(animDir))
+				{
+					var animEnum = Directory.EnumerateFiles(animDir);
+					foreach (var anim in animEnum)
+					{
+						var additionalScene = importer.ImportFile(anim);
+
+						//Rename
+						additionalScene.Animations[0].Name = Path.GetFileNameWithoutExtension(anim);
+
+						_scene.Animations.AddRange(additionalScene.Animations);
+						additionalScene.Clear();
+					}
+				}
+
+
 				FindSkeleton();     // Find _rootBone, _bones, _deformationBones.
 
 				// Create _materials.
@@ -333,6 +351,7 @@ namespace Microsoft.Xna.Framework.Content.Pipeline
 					ImportMaterials();
 
 				ImportNodes();      // Create _pivots and _rootNode (incl. children).
+
 				ImportSkeleton();   // Create skeleton (incl. animations) and add to _rootNode.
 
 				// If we have a simple hierarchy with no bones and just the one
